@@ -18,6 +18,7 @@
 				<li id = "about"><a href="${pageContext.request.contextPath}/about">About</a></li>
 				<li id = "listProducts"><a href="${pageContext.request.contextPath}/listProducts">View Products</a></li>
 				<li id = "contact"><a href="${pageContext.request.contextPath}/contact">Contact</a></li>
+				<li id = "manageProduct"><a href="${pageContext.request.contextPath}/manage/product">Manage Product</a></li>
 			</ul>
 		</div>
 		<!-- /.navbar-collapse -->

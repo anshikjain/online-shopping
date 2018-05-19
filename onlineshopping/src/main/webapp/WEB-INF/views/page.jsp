@@ -23,9 +23,13 @@
 
 <script>
 	window.menu = '${title}';
+	window.contextRoot = '${pageContext.request.contextPath}';
 </script>
 <!-- Bootstrap Core CSS -->
 <link href="${css}/bootstrap.min.css" rel="stylesheet">
+
+<!-- Bootstrap DataTable CSS -->
+<link href="${css}/dataTables.bootstrap.css" rel="stylesheet">
 
 <!-- Custom CSS -->
 <link href="${css}/shop-homepage.css" rel="stylesheet">
@@ -42,42 +46,61 @@
 
 <body>
 
-<div class = "container">
-	<!-- Navigation -->
-	<%@include file="./shared/navbar.jsp"%>
+	<div class="container">
+		<!-- Navigation -->
+		<%@include file="./shared/navbar.jsp"%>
 
-	<div class = "content">
-	<!-- Page Content -->
-	<c:if test="${userClickHome == true }">
-		<%@include file="home.jsp"%>
-	</c:if>
+		<div class="content">
+			<!-- Page Content -->
+			<c:if test="${userClickHome == true }">
+				<%@include file="home.jsp"%>
+			</c:if>
 
-	<c:if test="${userClickAbout == true }">
-		<%@include file="about.jsp"%>
-	</c:if>
+			<c:if test="${userClickAbout == true }">
+				<%@include file="about.jsp"%>
+			</c:if>
 
-	<c:if test="${userClickContact == true }">
-		<%@include file="contact.jsp"%>
-	</c:if>
+			<c:if test="${userClickContact == true }">
+				<%@include file="contact.jsp"%>
+			</c:if>
+
+			<c:if
+				test="${userClickAllProducts == true or userClickCategoryProducts == true }">
+				<%@include file="listProducts.jsp"%>
+			</c:if>
+
+			<!-- Load only when user clicks show product -->
+			<c:if test="${userClickSingleProduct == true}">
+				<%@include file="singleProduct.jsp"%>
+			</c:if>
+
+	<!-- Load only when user clicks manage product -->
+			<c:if test="${userClickManageProduct == true}">
+				<%@include file="manageProduct.jsp"%>
+			</c:if>	
+
 	
-	<c:if test="${userClickAllProducts == true or userClickCategoryProducts == true }">
-		<%@include file="listProducts.jsp"%>
-	</c:if>
-	</div>	
-	<!-- /.container -->
-	<%@include file="./shared/footer.jsp"%>
+		</div>
+		<!-- /.container -->
+	<%-- 	<%@include file="./shared/footer.jsp"%>
+ --%>
+		<!-- /.container -->
 
-	<!-- /.container -->
+		<!-- jQuery -->
+		<script src="${js}/jquery.js"></script>
 
-	<!-- jQuery -->
-	<script src="${js}/jquery.js"></script>
+		<!-- jquery dataTable -->
+		<script src="${js}/jquery.dataTables.js"></script>
 
-	<!-- Bootstrap Core JavaScript -->
-	<script src="${js}/bootstrap.min.js"></script>
-	
-	<!-- Custom javascript file -->
-	<script src="${js}/myapp.js"></script>
-</div>
+		<!-- Bootstrap Core JavaScript -->
+		<script src="${js}/bootstrap.min.js"></script>
+
+		<!-- Bootstrap DataTable-->
+		<script src="${js}/dataTables.boostrap.js"></script>
+
+		<!-- Custom javascript file -->
+		<script src="${js}/myapp.js"></script>
+	</div>
 </body>
 
 </html>

@@ -1,66 +1,76 @@
 package com.ans.shoppingbackend.daoimpl;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
+import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ans.shoppingbackend.dao.CategoryDao;
 import com.ans.shoppingbackend.dto.Category;
 
 @Repository("categoryDao")
-public class CategoryDaoImpl implements CategoryDao{
-	private static List<Category> categories = new ArrayList<>();
-	
-	static {
-		Category category = new Category();
-		category.setId(1);
-		category.setName("Television");
-		category.setDescription("Television description");
-		category.setImageURL("CAT_01.png");
-		category.setActive(true);
-		
-		Category category2 = new Category();
-		category2.setId(2);
-		category2.setName("Mobile");
-		category2.setDescription("Mobile description");
-		category2.setImageURL("CAT_02.png");
-		category2.setActive(true);
-		
-		Category category3 = new Category();
-		category3.setId(3);
-		category3.setName("Laptops");
-		category3.setDescription("Laptop description");
-		category3.setImageURL("CAT_03.png");
-		category3.setActive(true);
-		
-		categories.add(category);
-		categories.add(category2);
-		categories.add(category3);
-	}
+@Transactional
+public class CategoryDaoImpl implements CategoryDao {
+	@Autowired
+	SessionFactory sessionFactory;
 
 	@Override
 	public List<Category> list() {
-		// TODO Auto-generated method stub
-		return categories;
+		String selectQuery = "FROM Category WHERE active = :active";
+		Query query = sessionFactory.getCurrentSession().createQuery(selectQuery);
+		query.setParameter("active", true);	
+		return query.getResultList();
 	}
 
 	@Override
 	public Category getCategoryById(int id) {
 		// TODO Auto-generated method stub
-		for (Iterator iterator = categories.iterator(); iterator.hasNext();) {
-			Category category = (Category) iterator.next();
-			if(category.getId() == id)
-			{
-				return category;
-			}
-			
+
+		try {
+
+			Category category = sessionFactory.getCurrentSession().get(Category.class, Integer.valueOf(id));
+			return category;
+		} catch (Exception exception) {
+			return null;
 		}
-		return null;
-		
+
+	}
+
+	@Override
+	public boolean add(Category category) {
+		try {
+
+			sessionFactory.getCurrentSession().persist(category);
+			return true;
+		} catch (Exception exception) {
+			return false;
+		}
 	}
 	
+	@Override
+	public boolean update(Category category) {
+		try {
+
+			sessionFactory.getCurrentSession().update(category);
+			return true;
+		} catch (Exception exception) {
+			return false;
+		}
+	}
 	
-	
+	@Override
+	public boolean delete(Category category) {
+		category.setActive(false);
+		try {
+
+			sessionFactory.getCurrentSession().update(category);
+			return true;
+		} catch (Exception exception) {
+			return false;
+		}
+	}
+
 }
